@@ -1,15 +1,16 @@
-function uniquePaths(m, n) {
-  const dp = new Array(m).fill(0).map(() => new Array(n).fill(0));
-  for (let i = 0; i < m; i++) {
-    dp[i][0] = 1;
+function reverseBetween(head, m, n) {
+  if (!head || m === n) return head;
+  const dummy = new ListNode(0);
+  dummy.next = head;
+  let prev = dummy;
+  for (let i = 0; i < m - 1; i++) prev = prev.next;
+  let start = prev.next;
+  let then = start.next;
+  for (let i = 0; i < n - m; i++) {
+    start.next = then.next;
+    then.next = prev.next;
+    prev.next = then;
+    then = start.next;
   }
-  for (let j = 0; j < n; j++) {
-    dp[0][j] = 1;
-  }
-  for (let i = 1; i < m; i++) {
-    for (let j = 1; j < n; j++) {
-      dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-    }
-  }
-  return dp[m - 1][n - 1];
+  return dummy.next;
 }
